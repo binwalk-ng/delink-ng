@@ -1,7 +1,13 @@
 [package]
-name = "delink"
-version = "0.1.0"
+name = "delink-ng"
+version = "0.2.0"
 edition = "2024"
+description = "A crypto library to decrypt various encrypted D-Link firmware images."
+repository = "https://github.com/binwalk-ng/delink-ng"
+license = "MIT"
+keywords = ["firmware", "dlink", "decrypt", "cryptography", "embedded"]
+categories = ["cryptography", "security", "command-line-utilities"]
+exclude = ["/.github", "/.gitignore", "/prek.toml"]
 
 [lints.clippy]
 redundant_type_annotations = "warn"
@@ -24,6 +30,9 @@ cbc = "0.2.1"
 env_logger = { version = "0.11.5", optional = true }
 
 [features]
-default = ["bin-only"]
-# Features only required by the binary
-bin-only = ["dep:env_logger"]
+# Keep the library dependency-free by default: the `cli` feature (and its
+# env_logger dependency) is only needed to run the command-line binary, not to
+# use the crate as a library.
+default = []
+# Enables logging for the command-line binary only.
+cli = ["dep:env_logger"]

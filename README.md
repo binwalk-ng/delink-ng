@@ -1,6 +1,8 @@
-# DeLink
+# delink-ng
 
 A crypto library to decrypt various encrypted D-Link firmware images.
+
+A fork of [delink](https://github.com/devttys0/delink) by [@devttys0](https://github.com/devttys0).
 
 Confirmed to work on the following D-Link devices:
 
@@ -70,7 +72,16 @@ cargo build --release
 ## Command Line Usage:
 
 ```bash
-./target/release/delink encrypted.bin decrypted.bin
+./target/release/delink-ng encrypted.bin decrypted.bin
+```
+
+The CLI is silent by default, which keeps `env_logger` out of the dependency
+tree for people using this crate as a library. To enable logging, build with the
+`cli` feature:
+
+```bash
+cargo build --release --features cli
+RUST_LOG=info ./target/release/delink-ng encrypted.bin decrypted.bin
 ```
 
 ## Rust Library Usage:
@@ -82,7 +93,7 @@ match std::fs::read("DIR850LB1_FW220WWb03.bin") {
     }
     Ok(encrypted_data) => {
         // Attempt to decrypt the encrypted data
-        match delink::decrypt(&encrypted_data) {
+        match delink_ng::decrypt(&encrypted_data) {
             Err(e) => {
                 eprint!("Decryption failed: {}", e);
             }

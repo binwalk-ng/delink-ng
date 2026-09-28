@@ -60,7 +60,7 @@
 //! ### Example:
 //!
 //! ```no_run
-//! use delink;
+//! use delink_ng;
 //!
 //! // Read in the contents of an encrypted firmware image
 //! match std::fs::read("DIR850LB1_FW220WWb03.bin") {
@@ -69,7 +69,7 @@
 //!     }
 //!     Ok(encrypted_data) => {
 //!         // Attempt to decrypt the encrypted data
-//!         match delink::decrypt(&encrypted_data) {
+//!         match delink_ng::decrypt(&encrypted_data) {
 //!             Err(e) => {
 //!                 eprint!("Decryption failed: {}", e);
 //!             }
