@@ -1,0 +1,31 @@
+name: Release
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    name: Publish to crates.io
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Code checkout
+        uses: actions/checkout@v7
+
+      - name: Install Rust toolchain (stable)
+        uses: dtolnay/rust-toolchain@stable
+
+      # Exchanges the GitHub OIDC token for a short-lived crates.io token.
+      # No API tokens stored in secrets. The workflow filename must match the
+      # trusted publisher registered at crates.io/crates/delink-ng/settings.
+      - name: Authenticate with crates.io
+        uses: rust-lang/crates-io-auth-action@v1
+        id: auth
+
+      - name: Publish
+        run: cargo publish --locked
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ steps.auth.outputs.token }}
