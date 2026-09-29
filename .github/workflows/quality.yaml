@@ -53,6 +53,12 @@ jobs:
       matrix:
         platform:
           - target: x86_64-unknown-linux-gnu
+        # Both configurations are checked: the default build (library plus
+        # binary) and the library-only build that dependency consumers get
+        # with `default-features = false`.
+        features:
+          - ""
+          - "--no-default-features"
 
     steps:
       - name: Code checkout
@@ -65,4 +71,4 @@ jobs:
           components: clippy
 
       - name: Clippy (all crates)
-        run: cargo clippy --locked --target=${{ matrix.platform.target }} --workspace --all-targets --all-features -- -D warnings
+        run: cargo clippy --locked --target=${{ matrix.platform.target }} --workspace --all-targets ${{ matrix.features }} -- -D warnings

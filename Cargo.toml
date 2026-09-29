@@ -1,6 +1,6 @@
 [package]
 name = "delink-ng"
-version = "0.2.0"
+version = "0.2.1"
 edition = "2024"
 description = "A crypto library to decrypt various encrypted D-Link firmware images."
 repository = "https://github.com/binwalk-ng/delink-ng"
@@ -29,10 +29,12 @@ cbc = "0.2.1"
 # Only used for the binary, not the library
 env_logger = { version = "0.11.5", optional = true }
 
+# Lets `--no-default-features` build the library alone
+[[bin]]
+name = "delink-ng"
+path = "src/main.rs"
+required-features = ["cli"]
+
 [features]
-# Keep the library dependency-free by default: the `cli` feature (and its
-# env_logger dependency) is only needed to run the command-line binary, not to
-# use the crate as a library.
-default = []
-# Enables logging for the command-line binary only.
+default = ["cli"]
 cli = ["dep:env_logger"]

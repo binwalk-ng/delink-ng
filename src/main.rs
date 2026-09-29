@@ -18,8 +18,8 @@ pub enum ApplicationError {
 fn main() -> Result<(), ApplicationError> {
     const REQUIRED_CMD_ARGS_LEN: usize = 3;
 
-    // Initialize logging (a no-op unless the `cli` feature is enabled)
-    init_logging();
+    // Initialize logging
+    env_logger::Builder::from_env(env_logger::Env::default().default_filter_or("trace")).init();
 
     // Get command line arguments
     let cmdline: Vec<String> = std::env::args().collect();
@@ -64,14 +64,6 @@ fn main() -> Result<(), ApplicationError> {
         Err(ApplicationError::Usage)
     }
 }
-
-#[cfg(feature = "cli")]
-fn init_logging() {
-    env_logger::Builder::from_env(env_logger::Env::default().default_filter_or("trace")).init();
-}
-
-#[cfg(not(feature = "cli"))]
-fn init_logging() {}
 
 fn write_decrypted_data(file_name: &str, decrypted_data: &[u8]) -> bool {
     // Write decrypted contents to the output file

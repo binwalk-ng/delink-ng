@@ -69,22 +69,35 @@ You must have the Rust compiler installed:
 cargo build --release
 ```
 
+To install the binary instead:
+
+```bash
+cargo install delink-ng
+```
+
 ## Command Line Usage:
 
 ```bash
-./target/release/delink-ng encrypted.bin decrypted.bin
+delink-ng encrypted.bin decrypted.bin
 ```
 
-The CLI is silent by default, which keeps `env_logger` out of the dependency
-tree for people using this crate as a library. To enable logging, build with the
-`cli` feature:
+Logging defaults to `trace`, which is what tells you which of the decryption
+methods matched. Set `RUST_LOG` to quiet it down or to target a module:
 
 ```bash
-cargo build --release --features cli
-RUST_LOG=info ./target/release/delink-ng encrypted.bin decrypted.bin
+RUST_LOG=warn delink-ng encrypted.bin decrypted.bin
 ```
 
 ## Rust Library Usage:
+
+Using this crate as a library? Disable default features to keep `env_logger`
+(only needed for the command-line binary) out of your dependency tree:
+
+```toml
+[dependencies]
+delink-ng = { version = "0.2", default-features = false }
+```
+
 ```rust
 // Read in the contents of an encrypted firmware image
 match std::fs::read("DIR850LB1_FW220WWb03.bin") {
